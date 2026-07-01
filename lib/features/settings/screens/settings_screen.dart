@@ -22,7 +22,7 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: <Widget>[
-          _SectionLabel('Appearance'),
+          const _SectionLabel('Appearance'),
           ListTile(
             leading: const Icon(Icons.brightness_6_rounded),
             title: const Text('Theme'),
@@ -54,10 +54,10 @@ class SettingsScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 16),
-          ListTile(
-            leading: const Icon(Icons.palette_rounded),
-            title: const Text('Accent color'),
-            subtitle: const Text('Used across buttons, charts and highlights'),
+          const ListTile(
+            leading: Icon(Icons.palette_rounded),
+            title: Text('Accent color'),
+            subtitle: Text('Used across buttons, charts and highlights'),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -76,7 +76,7 @@ class SettingsScreen extends ConsumerWidget {
             ),
           ),
           const Divider(height: 32),
-          _SectionLabel('Data'),
+          const _SectionLabel('Data'),
           ListTile(
             leading: Icon(
               Icons.delete_sweep_rounded,
@@ -87,7 +87,7 @@ class SettingsScreen extends ConsumerWidget {
             onTap: () => _confirmClear(context, ref),
           ),
           const Divider(height: 32),
-          _SectionLabel('About'),
+          const _SectionLabel('About'),
           const ListTile(
             leading: Icon(Icons.info_outline_rounded),
             title: Text(AppConstants.appName),

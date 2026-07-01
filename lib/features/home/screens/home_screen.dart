@@ -79,7 +79,7 @@ class HomeScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             if (todayTasks.isEmpty)
-              _MutedCard(
+              const _MutedCard(
                 icon: Icons.wb_sunny_rounded,
                 text: 'No tasks due today. Add one or enjoy a clear day.',
               )
@@ -99,7 +99,7 @@ class HomeScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             if (habits.isEmpty)
-              _MutedCard(
+              const _MutedCard(
                 icon: Icons.auto_awesome_rounded,
                 text: 'No habits yet. Create one to start a streak.',
               )
