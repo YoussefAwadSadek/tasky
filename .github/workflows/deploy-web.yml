@@ -1,0 +1,66 @@
+name: Deploy web demo to GitHub Pages
+
+# Builds the Flutter web version of Tasky and publishes it to GitHub Pages,
+# so the app has a live demo at https://<user>.github.io/tasky/ without
+# needing an app store listing.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      # The repo ships only lib/, test/ and config — generate the web runner.
+      - name: Scaffold platform folders
+        run: flutter create . --platforms web --project-name tasky
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build web release
+        # Hosted at a /tasky/ sub-path on GitHub Pages.
+        run: flutter build web --release --base-href /tasky/
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+        with:
+          enablement: true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
