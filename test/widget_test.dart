@@ -100,8 +100,12 @@ void main() {
     // The empty state for an unfiltered, empty task list is shown.
     expect(find.text('No tasks yet'), findsOneWidget);
 
-    // Add a task through the notifier and let the UI rebuild.
-    await container.read(taskListProvider.notifier).addTask(title: 'Buy milk');
+    // Add a task through the notifier and let the UI rebuild. The Hive write
+    // is real file I/O, which never completes inside the widget test's
+    // fake-async zone — runAsync executes it on the real event loop.
+    await tester.runAsync(
+      () => container.read(taskListProvider.notifier).addTask(title: 'Buy milk'),
+    );
     await tester.pump();
 
     // The new task appears and the empty state is gone.
